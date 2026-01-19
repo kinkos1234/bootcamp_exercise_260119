@@ -6,6 +6,11 @@ HR & Marketing Analytics Dashboard
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from pathlib import Path
+
+# 현재 스크립트 디렉토리 기준 절대 경로 설정
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR / "data"
 
 # ============================================================
 # 페이지 설정
@@ -23,7 +28,7 @@ st.set_page_config(
 @st.cache_data
 def load_hr_data():
     """HR 데이터 로드 및 전처리"""
-    df = pd.read_csv("data/hr_data.csv")
+    df = pd.read_csv(DATA_DIR / "hr_data.csv")
     
     # Attrition을 숫자로 변환 (Yes=1, No=0)
     df['Attrition_Num'] = df['Attrition'].apply(lambda x: 1 if x == 'Yes' else 0)
@@ -34,7 +39,7 @@ def load_hr_data():
 @st.cache_data
 def load_marketing_data():
     """마케팅 데이터 로드 및 전처리"""
-    df = pd.read_csv("data/marketing_data.csv")
+    df = pd.read_csv(DATA_DIR / "marketing_data.csv")
     
     # Acquisition_Cost: "$16,174.00" → 16174.00 (숫자 변환)
     df['Acquisition_Cost_Num'] = (
